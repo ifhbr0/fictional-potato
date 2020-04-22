@@ -8,7 +8,6 @@ import (
 	"sync"
 	"time"
 
-	ftx "github.com/go-numb/go-ftx"
 	polo "github.com/ifhbr0/poloniex"
 )
 
@@ -32,7 +31,6 @@ type Bot struct {
 	PoloLast        int64
 	PoloUSDTBalance float64
 	PoloClient      *polo.Poloniex
-	FtxClient       *ftx.Client
 	Tokens          map[string]*tokenWatcher
 	PricePerShare   map[string]float64
 	ppsMut          sync.RWMutex
@@ -146,16 +144,6 @@ func NewBot(tokens []tradeToken) *Bot {
 		log.Fatalln(err)
 	}
 	b.PoloClient = poloniex
-
-	ftx_key, exists := os.LookupEnv("FTX_KEY")
-	ftx_secret, secret_exists := os.LookupEnv("FTX_SECRET")
-
-	if !exists || !secret_exists {
-		log.Fatalln("ftx key or secret not set")
-	}
-	ftx := ftx.New(ftx_key, ftx_secret, nil)
-
-	b.FtxClient = ftx
 
 	b.Tokens = make(map[string]*tokenWatcher)
 	b.PricePerShare = make(map[string]float64)
