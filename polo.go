@@ -41,12 +41,14 @@ func watchPoloPrice(b *Bot) {
 
 func BalanceUpdateForever(b *Bot) {
 	for {
+		timeStart := time.Now().UnixNano()
 		err := PoloUsdtBalanceUpdate(b)
 		if err != nil {
 			log.Println(err)
 			continue
 		}
-		time.Sleep(10 * time.Second)
+		log.Println(timeStart - time.Now().UnixNano())
+		time.Sleep(2 * time.Second)
 
 	}
 }

@@ -65,9 +65,7 @@ func (t *tokenWatcher) run() {
 	for {
 		select {
 		case ask = <-t.poloAskUpdate:
-			if t.token.canonicalName == "BEAR" && ask == 7.17 {
-				log.Println(time.Now().UnixNano())
-			}
+			continue
 			t.bot.PoloLast = time.Now().Unix()
 			if ask == lastask {
 				continue
@@ -98,6 +96,7 @@ func (t *tokenWatcher) run() {
 			}
 
 		case bid = <-t.ftxBidUpdate:
+			continue
 			if bid == lastbid {
 				continue
 			}
@@ -166,10 +165,6 @@ func main() {
 		go t.UpdateShareInfoForever(100)
 	}
 	go BalanceUpdateForever(b)
-	time.Sleep(10 * time.Second)
-	sell, err := b.PoloClient.Sell("USDT_BEAR", 7.17, 1.0)
-	log.Println("start", time.Now().UnixNano())
-	log.Println(sell, err)
 
 	for {
 		time.Sleep(20 * time.Second)
